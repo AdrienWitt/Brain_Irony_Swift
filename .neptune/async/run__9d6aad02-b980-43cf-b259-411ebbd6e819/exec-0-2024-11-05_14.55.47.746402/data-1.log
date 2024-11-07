@@ -1,0 +1,9 @@
+{"obj": {"type": "AssignString", "path": ["sys", "name"], "value": "Untitled"}, "version": 1}
+{"obj": {"type": "AssignString", "path": ["sys", "description"], "value": ""}, "version": 2}
+{"obj": {"type": "AssignString", "path": ["sys", "hostname"], "value": "LaptopAdrien"}, "version": 3}
+{"obj": {"type": "AssignBool", "path": ["sys", "failed"], "value": false}, "version": 4}
+{"obj": {"type": "AssignString", "path": ["source_code", "entrypoint"], "value": "main.py"}, "version": 5}
+{"obj": {"type": "UploadFileSet", "path": ["source_code", "files"], "file_globs": ["/mnt/c/Users/adywi/OneDrive - unige.ch/Documents/Sarcasm_experiment/Brain_DeepLearning/Brain_Irony_Swift/main.py"], "reset": "False"}, "version": 6}
+{"obj": {"type": "AssignString", "path": ["source_code", "integrations", "pytorch-lightning"], "value": "1.9.1"}, "version": 7}
+{"obj": {"type": "AssignString", "path": ["training", "status"], "value": "failed"}, "version": 8}
+{"obj": {"type": "AssignString", "path": ["training", "status"], "value": "failed"}, "version": 9}
