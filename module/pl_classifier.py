@@ -206,21 +206,11 @@ class LitClassifier(pl.LightningModule):
         self.log_dict(result_dict, prog_bar=True, sync_dist=False, add_dataloader_idx=False, on_step=True, on_epoch=True, batch_size=self.hparams.batch_size) # batch_size = batch_size
         return loss
 
-    def _evaluate_metrics(self, subj_array, total_out, mode):
+    def _evaluate_metrics(self, total_out, mode):
         # print('total_out.device',total_out.device)
         # (total iteration/world_size) numbers of samples are passed into _evaluate_metrics.
-        subjects = np.unique(subj_array)
-        
-        subj_avg_logits = []
-        subj_targets = []
-        for subj in subjects:
-            #print('total_out.shape:',total_out.shape) # total_out.shape: torch.Size([16, 2])
-            subj_logits = total_out[subj_array == subj,0] 
-            subj_avg_logits.append(torch.mean(subj_logits).item())
-            subj_targets.append(total_out[subj_array == subj,1][0].item())
-        subj_avg_logits = torch.tensor(subj_avg_logits, device = total_out.device) 
-        subj_targets = torch.tensor(subj_targets, device = total_out.device) 
-        
+        logits = total_out[:, 0]
+        targets = total_out[:, 1].int()
     
         if self.hparams.downstream_task_type == 'classification':
             if self.hparams.adjust_thresh:
@@ -228,33 +218,33 @@ class LitClassifier(pl.LightningModule):
                 best_bal_acc = 0
                 best_thresh = 0
                 for thresh in np.arange(-5, 5, 0.01):
-                    bal_acc = balanced_accuracy_score(subj_targets.cpu(), (subj_avg_logits>=thresh).int().cpu())
+                    bal_acc = balanced_accuracy_score(targets.cpu(), (logits>=thresh).int().cpu())
                     if bal_acc > best_bal_acc:
                         best_bal_acc = bal_acc
                         best_thresh = thresh
                 self.log(f"{mode}_best_thresh", best_thresh, sync_dist=True)
                 self.log(f"{mode}_best_balacc", best_bal_acc, sync_dist=True)
-                fpr, tpr, thresholds = roc_curve(subj_targets.cpu(), subj_avg_logits.cpu())
+                fpr, tpr, thresholds = roc_curve(targets.cpu(), logits.cpu())
                 idx = np.argmax(tpr - fpr)
                 youden_thresh = thresholds[idx]
                 acc_func = BinaryAccuracy().to(total_out.device)
                 self.log(f"{mode}_youden_thresh", youden_thresh, sync_dist=True)
-                self.log(f"{mode}_youden_balacc", balanced_accuracy_score(subj_targets.cpu(), (subj_avg_logits>=youden_thresh).int().cpu()), sync_dist=True)
+                self.log(f"{mode}_youden_balacc", balanced_accuracy_score(targets.cpu(), (logits>=youden_thresh).int().cpu()), sync_dist=True)
 
                 if mode == 'valid':
                     self.threshold = youden_thresh
                 elif mode == 'test':
-                    bal_acc = balanced_accuracy_score(subj_targets.cpu(), (subj_avg_logits>=self.threshold).int().cpu())
+                    bal_acc = balanced_accuracy_score(targets.cpu(), (logits>=self.threshold).int().cpu())
                     self.log(f"{mode}_balacc_from_valid_thresh", bal_acc, sync_dist=True)
             else:
                 acc_func = BinaryAccuracy().to(total_out.device)
                 
             auroc_func = BinaryAUROC().to(total_out.device)
-            acc = acc_func((subj_avg_logits >= 0).int(), subj_targets)
+            acc = acc_func((logits >= 0).int(), targets)
             #print((subj_avg_logits>=0).int().cpu())
             #print(subj_targets.cpu())
-            bal_acc_sk = balanced_accuracy_score(subj_targets.cpu(), (subj_avg_logits>=0).int().cpu())
-            auroc = auroc_func(torch.sigmoid(subj_avg_logits), subj_targets)
+            bal_acc_sk = balanced_accuracy_score(targets.cpu(), (logits>=0).int().cpu())
+            auroc = auroc_func(torch.sigmoid(logits), targets)
 
             self.log(f"{mode}_acc", acc, sync_dist=True)
             self.log(f"{mode}_balacc", bal_acc_sk, sync_dist=True)
@@ -262,18 +252,18 @@ class LitClassifier(pl.LightningModule):
 
         # regression target is normalized
         elif self.hparams.downstream_task_type == 'regression':          
-            mse = F.mse_loss(subj_avg_logits, subj_targets)
-            mae = F.l1_loss(subj_avg_logits, subj_targets)
+            mse = F.mse_loss(logits, targets)
+            mae = F.l1_loss(logits, targets)
             
             # reconstruct to original scale
             if self.hparams.label_scaling_method == 'standardization': # default
-                adjusted_mse = F.mse_loss(subj_avg_logits * self.scaler.scale_[0] + self.scaler.mean_[0], subj_targets * self.scaler.scale_[0] + self.scaler.mean_[0])
-                adjusted_mae = F.l1_loss(subj_avg_logits * self.scaler.scale_[0] + self.scaler.mean_[0], subj_targets * self.scaler.scale_[0] + self.scaler.mean_[0])
+                adjusted_mse = F.mse_loss(logits * self.scaler.scale_[0] + self.scaler.mean_[0], targets * self.scaler.scale_[0] + self.scaler.mean_[0])
+                adjusted_mae = F.l1_loss(logits * self.scaler.scale_[0] + self.scaler.mean_[0], targets * self.scaler.scale_[0] + self.scaler.mean_[0])
             elif self.hparams.label_scaling_method == 'minmax':
-                adjusted_mse = F.mse_loss(subj_avg_logits * (self.scaler.data_max_[0] - self.scaler.data_min_[0]) + self.scaler.data_min_[0], subj_targets * (self.scaler.data_max_[0] - self.scaler.data_min_[0]) + self.scaler.data_min_[0])
-                adjusted_mae = F.l1_loss(subj_avg_logits * (self.scaler.data_max_[0] - self.scaler.data_min_[0]) + self.scaler.data_min_[0], subj_targets * (self.scaler.data_max_[0] - self.scaler.data_min_[0]) + self.scaler.data_min_[0])
+                adjusted_mse = F.mse_loss(logits * (self.scaler.data_max_[0] - self.scaler.data_min_[0]) + self.scaler.data_min_[0], targets * (self.scaler.data_max_[0] - self.scaler.data_min_[0]) + self.scaler.data_min_[0])
+                adjusted_mae = F.l1_loss(logits * (self.scaler.data_max_[0] - self.scaler.data_min_[0]) + self.scaler.data_min_[0], targets * (self.scaler.data_max_[0] - self.scaler.data_min_[0]) + self.scaler.data_min_[0])
             pearson = PearsonCorrCoef().to(total_out.device)
-            prearson_coef = pearson(subj_avg_logits, subj_targets)
+            prearson_coef = pearson(logits, targets)
             
             self.log(f"{mode}_corrcoef", prearson_coef, sync_dist=True)
             self.log(f"{mode}_mse", mse, sync_dist=True)
@@ -306,18 +296,8 @@ class LitClassifier(pl.LightningModule):
         if not self.hparams.pretraining:
             outputs_valid = outputs[0]
             outputs_test = outputs[1]
-            subj_valid = []
-            subj_test = []
-            out_valid_list = []
-            out_test_list = []
-            for subj, out in outputs_valid:
-                subj_valid += subj
-                out_valid_list.append(out.detach())
-            for subj, out in outputs_test:
-                subj_test += subj
-                out_test_list.append(out.detach())
-            subj_valid = np.array(subj_valid)
-            subj_test = np.array(subj_test)
+            out_valid_list = [out.detach() for _, out in outputs_valid]
+            out_test_list = [out.detach() for _, out in outputs_test]
             total_out_valid = torch.cat(out_valid_list, dim=0)
             total_out_test = torch.cat(out_test_list, dim=0)
 
@@ -326,8 +306,8 @@ class LitClassifier(pl.LightningModule):
             # self._save_predictions(subj_test,total_out_test, mode="test") 
                 
             # evaluate 
-            self._evaluate_metrics(subj_valid, total_out_valid, mode="valid")
-            self._evaluate_metrics(subj_test, total_out_test, mode="test")
+            self._evaluate_metrics(total_out_valid, mode="valid")
+            self._evaluate_metrics(total_out_test, mode="test")
             
     # If you use loggers other than Neptune you may need to modify this
     def _save_predictions(self,total_subjs,total_out, mode):
@@ -382,15 +362,10 @@ class LitClassifier(pl.LightningModule):
 
     def test_epoch_end(self, outputs):
         if not self.hparams.pretraining:
-            subj_test = [] 
-            out_test_list = []
-            for subj, out in outputs:
-                subj_test += subj
-                out_test_list.append(out.detach())
-            subj_test = np.array(subj_test)
+            out_test_list = [out.detach() for _, out in outputs]
             total_out_test = torch.cat(out_test_list, dim=0)
             # self._save_predictions(subj_test, total_out_test, mode="test") 
-            self._evaluate_metrics(subj_test, total_out_test, mode="test")
+            self._evaluate_metrics(total_out_test, mode="test")
     
     def on_train_epoch_start(self) -> None:
         self.starter, self.ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
