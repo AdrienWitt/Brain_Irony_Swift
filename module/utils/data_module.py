@@ -99,7 +99,6 @@ class fMRIDataModule(pl.LightningDataModule):
                 file_path = os.path.join(subject_path, file)
                 basename = file.split('.')[0]
                 parts = basename.split('_')
-                file_type = parts[1]
                 task = parts[3]      
                 condition = f'{parts[5]}_{parts[6]}'
                 sequence_length = torch.load(file_path).shape[3]
@@ -115,12 +114,11 @@ class fMRIDataModule(pl.LightningDataModule):
                                        1 if task == 'semantic' else
                                        2 if task == 'irony' else
                                        3 if task == 'sarcasm' else
-                                       5)
-                    label = task      
+                                       4)
+                    label = task
                 file_dict = {
                         'subject' : subject,
                         'file': file_path,
-                        'file_type': file_type,
                         "sequence_length" : sequence_length,
                         'target': target,
                         'label': label}
@@ -140,6 +138,9 @@ class fMRIDataModule(pl.LightningDataModule):
                 "downstream_task": self.hparams.downstream_task,
                 "use_contrastive" : self.hparams.use_contrastive,
                 "contrastive_type" : self.hparams.contrastive_type,
+                "augmentation_prob" : self.hparams.augmentation_prob,
+                "train_augment_only_affine" : self.hparams.train_augment_only_affine,
+                "train_augment_only_intensity" : self.hparams.train_augment_only_intensity,
                 "dtype":'float16'}
         
         if os.path.exists(self.split_file_path):
@@ -154,10 +155,10 @@ class fMRIDataModule(pl.LightningDataModule):
         val_dict = {key: subject_dict[key] for key in val_names if key in subject_dict}
         test_dict = {key: subject_dict[key] for key in test_names if key in subject_dict}
         
-        self.train_dataset = Dataset(**params,subject_dict=train_dict,use_augmentations=False, train=True)
-        # load train mean/std of target labels to val/test dataloader
-        self.val_dataset = Dataset(**params,subject_dict=val_dict,use_augmentations=False,train=False) 
-        self.test_dataset = Dataset(**params,subject_dict=test_dict,use_augmentations=False,train=False) 
+
+        self.train_dataset = Dataset(**params,subject_dict=train_dict,train=True,use_augmentation=self.hparams.random_augment_training)
+        self.val_dataset = Dataset(**params,subject_dict=val_dict,train=False, use_augmentation=False) 
+        self.test_dataset = Dataset(**params,subject_dict=test_dict,train=False, use_augmentation = False) 
         
         print("number of train_subj:", len(train_dict))
         print("number of val_subj:", len(val_dict))
@@ -211,5 +212,9 @@ class fMRIDataModule(pl.LightningDataModule):
         group.add_argument("--num_workers", type=int, default=8)
         group.add_argument("--limit_training_samples", type=int, default=None, help="use if you want to limit training samples")
         group.add_argument("--label_scaling_method", default="standardization", choices=["minmax","standardization"], help="label normalization strategy for a regression task (mean and std are automatically calculated using train set)")
-
+        group.add_argument("--random_augment_training", action='store_true', help="Enable random augmentation during training")
+        group.add_argument("--augmentation_prob", default=0.5, help="Probability of applying augmentation to a given sample (default: 0.5)")
+        group.add_argument("--train_augment_only_affine", action='store_true', help="whether to only apply affine augmentation")
+        group.add_argument("--train_augment_only_intensity", action='store_true', help="whether to only apply intensity augmentation")
+    
         return parser
