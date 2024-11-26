@@ -5,6 +5,7 @@ import torch.nn as nn
 class mlp(nn.Module):
     def __init__(self, num_classes=2, num_tokens = 96):
         super(mlp, self).__init__()
+        print(f"MLP initialized with num_classes = {num_classes}")
         num_outputs = 1 if num_classes == 2 else num_classes
         self.head = nn.Linear(num_tokens, num_outputs)
         self.avgpool = nn.AdaptiveAvgPool1d(1)

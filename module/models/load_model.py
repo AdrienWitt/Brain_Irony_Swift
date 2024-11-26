@@ -26,7 +26,8 @@ def load_model(model_name, hparams=None):
             to_float = to_float,
             drop_rate=hparams.attn_drop_rate,
             drop_path_rate=hparams.attn_drop_rate,
-            attn_drop_rate=hparams.attn_drop_rate
+            attn_drop_rate=hparams.attn_drop_rate,
+            num_classes=hparams.num_classes
         )
     elif model_name == "emb_mlp":
         from .emb_mlp import mlp
@@ -34,10 +35,10 @@ def load_model(model_name, hparams=None):
     elif model_name == "clf_mlp":
         if hparams.clf_head_version == 'v1':
             from .clf_mlp import mlp
-            net = mlp(num_classes=2, num_tokens = hparams.embed_dim * (hparams.c_multiplier ** (n_stages - 1)))
+            net = mlp(num_classes=hparams.num_classes, num_tokens = hparams.embed_dim * (hparams.c_multiplier ** (n_stages - 1)))
         elif hparams.clf_head_version == 'v2':
             from .clf_mlp_v2 import mlp
-            net = mlp(num_classes=2, num_tokens = hparams.embed_dim * (hparams.c_multiplier ** (n_stages - 1)))
+            net = mlp(num_classes=hparams.num_classes, num_tokens = hparams.embed_dim * (hparams.c_multiplier ** (n_stages - 1)))
         else:
             raise NotImplementedError
         # x -> (b, 96, 4, 4, 4, t)

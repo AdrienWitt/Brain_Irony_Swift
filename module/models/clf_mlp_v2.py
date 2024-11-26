@@ -6,6 +6,7 @@ class mlp(nn.Module):
     def __init__(self, num_classes=2, num_tokens = 96):
         super(mlp, self).__init__()
         num_outputs = 1 if num_classes == 2 else num_classes
+        print(f"MLP initialized with num_classes = {num_classes}")
         self.hidden = nn.Linear(num_tokens, 4*num_tokens)
         self.head = nn.Linear(4*num_tokens, num_outputs)
         self.avgpool = nn.AdaptiveAvgPool1d(1)

@@ -103,7 +103,7 @@ class BaseDataset(Dataset):
                 label = file_dict["label"]
                 data_tuple = (i, subject, file, sequence_length, max_length, target, label)
                 data.append(data_tuple)
-                if self.use_augmentation and torch.rand(1).item() < self.augmentation_prob:
+                if self.use_augmentation and torch.rand(1).item() < float(self.augmentation_prob):
                    data_augmented_tuple = (i, subject, file, sequence_length, max_length, target, label, True) ## add flag for augmented
                    data.append(data_augmented_tuple)    
         

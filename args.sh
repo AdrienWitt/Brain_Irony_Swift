@@ -1,8 +1,8 @@
 TRAINER_ARGS='--accelerator gpu --max_epochs 10 --precision 16 --num_nodes 1 --devices 1' # specify the number of gpus as '--devices'
 MAIN_ARGS='--loggername tensorboard --classifier_module v6 --image_path data'
-DATA_ARGS='--batch_size 16 --num_workers 2 --train_split 0.70 --val_split 0.20'
-DEFAULT_ARGS='' #'--project_name BrainDeepLearning/Brain-DeepLearning'
-OPTIONAL_ARGS='--c_multiplier 2 --last_layer_full_MSA True --clf_head_version v1 --downstream_task literal' #--use_scheduler --gamma 0.5 --cycle 0.5'
+DATA_ARGS='--batch_size 16 --num_workers 2 --train_split 0.70 --val_split 0.20 --random_augment_training --augmentation_prob 1' #--limit_training_samples 2
+DEFAULT_ARGS='--project_name BrainDeepLearning/Brain-DeepLearning'  
+OPTIONAL_ARGS='--c_multiplier 2 --last_layer_full_MSA True --clf_head_version v1 --downstream_task tasks --num_classes 5' #--use_scheduler --gamma 0.5 --cycle 0.5'
 RESUME_ARGS='' #'--load_model_path SwiFT/pretrained_models/hcp_sex_classification.ckpt'
 
 #export NEPTUNE_API_TOKEN="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIxOTNlMjg1OC0yY2NmLTRjN2ItODc0NC1iMjhjNzRiZGJhMTYifQ==" # when using neptune as a logger

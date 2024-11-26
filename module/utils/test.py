@@ -185,9 +185,8 @@ y = torch.cat(y, dim=4)
 
 
 #############################################################################################################################
-root = r"C:\Users\wittmann\OneDrive - unige.ch\Documents\Sarcasm_experiment\Brain_DeepLearning\Brain_Irony_Swift\data"
+root = "data"
 downstream_task = 'literal'
-os.chdir(r"C:\Users\wittmann\OneDrive - unige.ch\Documents\Sarcasm_experiment\Brain_DeepLearning\Brain_Irony_Swift")
 train = True
 
 def make_subject_dict():
@@ -351,7 +350,7 @@ params = {
         'use_contrastive' : False,
         'train': True,
         'use_augmentation': False,
-        "max_length" : 12,
+        "max_length" : 0,
         'downstream_task': 'literal',
         'image_path' : root,
         'dataset_split_num': 1,
@@ -367,13 +366,86 @@ params = {
         'strategy' : 'ddp',
         'use_custom_max_length': False,
         'contrastive_type' : 1,
+        'random_augment_training' : False,
+        "augmentation_prob" : 0.5,
+        "train_augment_only_affine" : False,
+        "train_augment_only_intensity" : False,     
         }
 
 data = fMRIDataModule(**params)
-data_loader = data.train_loader
+
+def make_subject_dict():
+    use_custom_max_length = False
+    max_length = 12
+    img_root = root
+    final_dict = dict()
+    subject_list = os.listdir(img_root)
+    downstream_task = 'literal'
+    
+    for subject in subject_list:
+        subject_path = os.path.join(img_root, subject)
+        file_list = os.listdir(subject_path)
+        file_dicts = []
+
+        for file in file_list:
+            file_path = os.path.join(subject_path, file)
+            basename = file.split('.')[0]
+            parts = basename.split('_')
+            task = parts[3]      
+            condition = f'{parts[5]}_{parts[6]}'
+            sequence_length = torch.load(file_path).shape[3]
+            
+            if not use_custom_max_length:
+                max_length = max(max_length, sequence_length)
+
+            if downstream_task == 'literal':
+                target = 1 if condition in ["CN_SPneg", "CP_SNpos"] else 0
+                label = condition
+            elif downstream_task == 'tasks':
+                target = (0 if task == 'prosody' else
+                                   1 if task == 'semantic' else
+                                   2 if task == 'irony' else
+                                   3 if task == 'sarcasm' else
+                                   5)
+                label = task      
+            file_dict = {
+                    'subject' : subject,
+                    'file': file_path,
+                    "sequence_length" : sequence_length,
+                    'target': target,
+                    'label': label}
+            file_dicts.append(file_dict)
+            final_dict[subject]=file_dicts
+    return final_dict
 
 
-processed_files = []
+sub_dict = make_subject_dict()
+
+
+dataset = BaseDataset(**params, subject_dict = sub_dict)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Iterate through the DataLoader until reaching the target batch
 for batch_idx, batch in enumerate(data_loader):
@@ -385,21 +457,55 @@ for batch_idx, batch in enumerate(data_loader):
 
 target_index = processed_files.index("data_deeplearning\p12\p12_wrMF_RUN2_tom_9_CP_SPpos.pt")
 
+from einops import rearrange
+import monai.transforms as monai_t
 
-y = torch.load("data_deeplearning\p12\p12_wrMF_RUN2_tom_9_CP_SPpos.pt")
-background_value = y.flatten()[0]
+img = torch.load("data\p12\p12_wrMF_RUN2_tom_9_CP_SPpos.pt")
+train_augment_only_affine = False
+train_augment_only_intensity = False
+     
 
-
-
-
-y = torch.load(r"C:\Users\adywi\OneDrive - unige.ch\Documents\Sarcasm_experiment\Brain_DeepLearning\Brain_Irony_Swift\data_deeplearning\p51\p51_wrMF_RUN5_irony_12_CP_SPpos.pt")
-background_value = y.flatten()[0]
-
-
+def augment(img):
 
 
-y = torch.load("data_deeplearning\p01\p01_wrMF_RUN1_sarcasm_10_CN_SNneg.pt").unsqueeze(0)
-background_value = y.flatten()[0].numpy()
+    C, H, W, D, T = img.shape
+
+    device = img.device
+    img = rearrange(img, 'c h w d t -> t c h w d')
+
+    rand_affine = monai_t.RandAffine(
+        prob=1.0,
+        # 0.175 rad = 10 degrees
+        rotate_range=(0.175, 0.175, 0.175),
+        scale_range = (0.1, 0.1, 0.1),
+        mode = "bilinear",
+        padding_mode = "border",
+        device = device
+    )
+    rand_noise = monai_t.RandGaussianNoise(prob=0.3, std=0.1)
+    rand_smooth = monai_t.RandGaussianSmooth(sigma_x=(0.0, 0.5), sigma_y=(0.0, 0.5), sigma_z=(0.0, 0.5), prob=0.1)
+    if train_augment_only_intensity:
+        comp = monai_t.Compose([rand_noise, rand_smooth])
+    else:
+        comp = monai_t.Compose([rand_affine, rand_noise, rand_smooth]) 
+
+        aug_seed = torch.randint(0, 10000000, (1,)).item()
+        # set augmentation seed to be the same for all time steps
+        for t in range(T):
+            if train_augment_only_affine:
+                rand_affine.set_random_state(seed=aug_seed)
+                img[t, :, :, :, :] = rand_affine(img[t, :, :, :, :])
+            else:
+                comp.set_random_state(seed=aug_seed)
+                img[t, :, :, :, :] = comp(img[t, :, :, :, :])
+
+    img = rearrange(img, 't c h w d -> c h w d t')
+
+    return img
+
+
+y = torch.load("data\p01\p01_wrMF_RUN1_sarcasm_10_CN_SNneg.pt").unsqueeze(0)
+y_augment = augment(y)
 
 y = torch.load("data_deeplearning\p01\p01_wrMF_RUN1_sarcasm_10_CN_SNneg.pt").unsqueeze(0)
 

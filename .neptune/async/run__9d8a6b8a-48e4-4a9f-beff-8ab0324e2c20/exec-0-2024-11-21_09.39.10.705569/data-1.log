@@ -1,0 +1,116 @@
+{"obj": {"type": "AssignString", "path": ["sys", "name"], "value": "Untitled"}, "version": 1}
+{"obj": {"type": "AssignString", "path": ["sys", "description"], "value": ""}, "version": 2}
+{"obj": {"type": "AssignString", "path": ["sys", "hostname"], "value": "LaptopAdrien"}, "version": 3}
+{"obj": {"type": "AssignBool", "path": ["sys", "failed"], "value": false}, "version": 4}
+{"obj": {"type": "AssignString", "path": ["source_code", "entrypoint"], "value": "main.py"}, "version": 5}
+{"obj": {"type": "UploadFileSet", "path": ["source_code", "files"], "file_globs": ["/mnt/c/Users/adywi/OneDrive - unige.ch/Documents/Sarcasm_experiment/Brain_DeepLearning/Brain_Irony_Swift/main.py"], "reset": "False"}, "version": 6}
+{"obj": {"type": "AssignString", "path": ["source_code", "integrations", "pytorch-lightning"], "value": "1.9.1"}, "version": 7}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "seed"], "value": 1}, "version": 8}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "downstream_task"], "value": "literal"}, "version": 9}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "downstream_task_type"], "value": "classification"}, "version": 10}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "classifier_module"], "value": "v6"}, "version": 11}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "loggername"], "value": "neptune"}, "version": 12}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "project_name"], "value": "BrainDeepLearning/Brain-DeepLearning"}, "version": 13}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "resume_ckpt_path"], "value": "None"}, "version": 14}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "load_model_path"], "value": "None"}, "version": 15}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "test_only"], "value": false}, "version": 16}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "test_ckpt_path"], "value": "None"}, "version": 17}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "freeze_feature_extractor"], "value": false}, "version": 18}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "grad_clip"], "value": false}, "version": 19}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "optimizer"], "value": "AdamW"}, "version": 20}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "use_scheduler"], "value": false}, "version": 21}
+{"obj": {"type": "AssignFloat", "path": ["training", "hyperparams", "weight_decay"], "value": 0.01}, "version": 22}
+{"obj": {"type": "AssignFloat", "path": ["training", "hyperparams", "learning_rate"], "value": 5e-05}, "version": 23}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "momentum"], "value": 0}, "version": 24}
+{"obj": {"type": "AssignFloat", "path": ["training", "hyperparams", "gamma"], "value": 1.0}, "version": 25}
+{"obj": {"type": "AssignFloat", "path": ["training", "hyperparams", "cycle"], "value": 0.3}, "version": 26}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "milestones"], "value": "[100, 150]"}, "version": 27}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "adjust_thresh"], "value": false}, "version": 28}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "use_contrastive"], "value": false}, "version": 29}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "contrastive_type"], "value": 0}, "version": 30}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "pretraining"], "value": false}, "version": 31}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "augment_during_training"], "value": false}, "version": 32}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "augment_only_affine"], "value": false}, "version": 33}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "augment_only_intensity"], "value": false}, "version": 34}
+{"obj": {"type": "AssignFloat", "path": ["training", "hyperparams", "temperature"], "value": 0.1}, "version": 35}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "model"], "value": "swin4d_ver7"}, "version": 36}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "in_chans"], "value": 1}, "version": 37}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "embed_dim"], "value": 36}, "version": 38}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "window_size"], "value": "[4, 4, 4, 4]"}, "version": 39}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "first_window_size"], "value": "[4, 4, 4, 4]"}, "version": 40}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "patch_size"], "value": "[6, 6, 6, 1]"}, "version": 41}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "depths"], "value": "[2, 2, 6, 2]"}, "version": 42}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "num_heads"], "value": "[3, 6, 12, 24]"}, "version": 43}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "c_multiplier"], "value": 2}, "version": 44}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "last_layer_full_MSA"], "value": true}, "version": 45}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "clf_head_version"], "value": "v1"}, "version": 46}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "attn_drop_rate"], "value": 0}, "version": 47}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "num_classes"], "value": 2}, "version": 48}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "scalability_check"], "value": false}, "version": 49}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "process_code"], "value": "None"}, "version": 50}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "dataset_split_num"], "value": 1}, "version": 51}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "image_path"], "value": "data"}, "version": 52}
+{"obj": {"type": "AssignFloat", "path": ["training", "hyperparams", "train_split"], "value": 0.7}, "version": 53}
+{"obj": {"type": "AssignFloat", "path": ["training", "hyperparams", "val_split"], "value": 0.2}, "version": 54}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "batch_size"], "value": 16}, "version": 55}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "eval_batch_size"], "value": 16}, "version": 56}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "img_size"], "value": "[96, 96, 96, 12]"}, "version": 57}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "max_length"], "value": 12}, "version": 58}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "use_custom_max_length"], "value": false}, "version": 59}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "num_workers"], "value": 2}, "version": 60}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "limit_training_samples"], "value": "None"}, "version": 61}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "label_scaling_method"], "value": "standardization"}, "version": 62}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "logger"], "value": true}, "version": 63}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "enable_checkpointing"], "value": true}, "version": 64}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "default_root_dir"], "value": "output/BrainDeepLearning/Brain-DeepLearning"}, "version": 65}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "gradient_clip_val"], "value": "None"}, "version": 66}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "gradient_clip_algorithm"], "value": "None"}, "version": 67}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "num_nodes"], "value": 1}, "version": 68}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "num_processes"], "value": "None"}, "version": 69}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "devices"], "value": "1"}, "version": 70}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "gpus"], "value": "None"}, "version": 71}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "auto_select_gpus"], "value": "None"}, "version": 72}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "tpu_cores"], "value": "None"}, "version": 73}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "ipus"], "value": "None"}, "version": 74}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "enable_progress_bar"], "value": true}, "version": 75}
+{"obj": {"type": "AssignFloat", "path": ["training", "hyperparams", "overfit_batches"], "value": 0.0}, "version": 76}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "track_grad_norm"], "value": -1}, "version": 77}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "check_val_every_n_epoch"], "value": 1}, "version": 78}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "fast_dev_run"], "value": false}, "version": 79}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "accumulate_grad_batches"], "value": "None"}, "version": 80}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "max_epochs"], "value": 10}, "version": 81}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "min_epochs"], "value": "None"}, "version": 82}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "max_steps"], "value": -1}, "version": 83}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "min_steps"], "value": "None"}, "version": 84}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "max_time"], "value": "None"}, "version": 85}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "limit_train_batches"], "value": "None"}, "version": 86}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "limit_val_batches"], "value": "None"}, "version": 87}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "limit_test_batches"], "value": "None"}, "version": 88}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "limit_predict_batches"], "value": "None"}, "version": 89}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "val_check_interval"], "value": "None"}, "version": 90}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "log_every_n_steps"], "value": 50}, "version": 91}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "accelerator"], "value": "gpu"}, "version": 92}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "strategy"], "value": "None"}, "version": 93}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "sync_batchnorm"], "value": false}, "version": 94}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "precision"], "value": 16}, "version": 95}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "enable_model_summary"], "value": true}, "version": 96}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "num_sanity_val_steps"], "value": 2}, "version": 97}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "resume_from_checkpoint"], "value": "None"}, "version": 98}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "profiler"], "value": "None"}, "version": 99}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "benchmark"], "value": "None"}, "version": 100}
+{"obj": {"type": "AssignInt", "path": ["training", "hyperparams", "reload_dataloaders_every_n_epochs"], "value": 0}, "version": 101}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "auto_lr_find"], "value": false}, "version": 102}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "replace_sampler_ddp"], "value": true}, "version": 103}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "detect_anomaly"], "value": false}, "version": 104}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "auto_scale_batch_size"], "value": false}, "version": 105}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "plugins"], "value": "None"}, "version": 106}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "amp_backend"], "value": "None"}, "version": 107}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "amp_level"], "value": "None"}, "version": 108}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "move_metrics_to_cpu"], "value": false}, "version": 109}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "multiple_trainloader_mode"], "value": "max_size_cycle"}, "version": 110}
+{"obj": {"type": "AssignBool", "path": ["training", "hyperparams", "inference_mode"], "value": true}, "version": 111}
+{"obj": {"type": "AssignString", "path": ["training", "hyperparams", "id"], "value": "BRAIN-19"}, "version": 112}
+{"obj": {"type": "AssignString", "path": ["training", "status"], "value": "failed"}, "version": 113}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "traceback"], "values": [{"value": "An uncaught exception occurred while run was active on worker LaptopAdrien.", "step": null, "ts": 1732178725.634088}, {"value": "Marking run as failed", "step": null, "ts": 1732178725.634088}, {"value": "Traceback:", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/mnt/c/Users/adywi/OneDrive - unige.ch/Documents/Sarcasm_experiment/Brain_DeepLearning/Brain_Irony_Swift/main.py\", line 190, in <module>\n    cli_main()\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/mnt/c/Users/adywi/OneDrive - unige.ch/Documents/Sarcasm_experiment/Brain_DeepLearning/Brain_Irony_Swift/main.py\", line 181, in cli_main\n    trainer.fit(model, datamodule=data_module)\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/trainer/trainer.py\", line 608, in fit\n    call._call_and_handle_interrupt(\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/trainer/call.py\", line 38, in _call_and_handle_interrupt\n    return trainer_fn(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/trainer/trainer.py\", line 650, in _fit_impl\n    self._run(model, ckpt_path=self.ckpt_path)\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/trainer/trainer.py\", line 1112, in _run\n    results = self._run_stage()\n              ^^^^^^^^^^^^^^^^^\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/trainer/trainer.py\", line 1191, in _run_stage\n    self._run_train()\n", "step": null, "ts": 1732178725.634088}]}, "version": 114}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "traceback"], "values": [{"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/trainer/trainer.py\", line 1204, in _run_train\n    self._run_sanity_check()\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/trainer/trainer.py\", line 1276, in _run_sanity_check\n    val_loop.run()\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/loops/loop.py\", line 199, in run\n    self.advance(*args, **kwargs)\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/loops/dataloader/evaluation_loop.py\", line 152, in advance\n    dl_outputs = self.epoch_loop.run(self._data_fetcher, dl_max_batches, kwargs)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/loops/loop.py\", line 199, in run\n    self.advance(*args, **kwargs)\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/loops/epoch/evaluation_epoch_loop.py\", line 137, in advance\n    output = self._evaluation_step(**kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/loops/epoch/evaluation_epoch_loop.py\", line 234, in _evaluation_step\n    output = self.trainer._call_strategy_hook(hook_name, *kwargs.values())\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/trainer/trainer.py\", line 1494, in _call_strategy_hook\n    output = fn(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^\n", "step": null, "ts": 1732178725.634088}, {"value": "  File \"/root/anaconda3/lib/python3.11/site-packages/pytorch_lightning/strategies/strategy.py\", line 390, in validation_step\n    return self.model.validation_step(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n", "step": null, "ts": 1732178725.634088}, {"value": "LitClassifier.validation_step() takes 3 positional arguments but 4 were given", "step": null, "ts": 1732178725.634088}]}, "version": 115}
+{"obj": {"type": "AssignBool", "path": ["sys", "failed"], "value": true}, "version": 116}

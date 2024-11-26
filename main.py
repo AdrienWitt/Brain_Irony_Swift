@@ -10,10 +10,9 @@ from pytorch_lightning.loggers.tensorboard import TensorBoardLogger
 from pytorch_lightning.loggers import CSVLogger
 
 # from module import LitClassifier
-#import neptune.new as neptune
 from module.utils.data_module import fMRIDataModule
 from module.utils.parser import str2bool
-from module.pl_classifier import LitClassifier
+from module.pl_classifier_new import LitClassifier
 import neptune.new as neptune
 
 def cli_main():
